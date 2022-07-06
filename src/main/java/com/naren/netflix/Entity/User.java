@@ -1,18 +1,22 @@
 package com.naren.netflix.Entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-    @SequenceGenerator(name = "user_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long userId;
 
@@ -31,12 +35,25 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String gender;
 
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date createdAt;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(name = "user_movies",
+            joinColumns = @JoinColumn(name = "user_"),
+            inverseJoinColumns = @JoinColumn(name = "movies_movie_id"))
+    private Set<Movies> movies = new LinkedHashSet<>();
 
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date updatedAt;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(name = "user_series",
+            joinColumns = @JoinColumn(name = "user_"),
+            inverseJoinColumns = @JoinColumn(name = "series_series_id"))
+    private Set<Series> series = new LinkedHashSet<>();
 
+
+    public void watches(Movies movie) {
+        movies.add(movie);
+    }
+
+
+    public void watch(Series oneSeries) {
+        series.add(oneSeries);
+    }
 }

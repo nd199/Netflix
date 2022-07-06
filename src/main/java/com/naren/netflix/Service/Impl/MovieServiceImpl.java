@@ -17,5 +17,13 @@ public class MovieServiceImpl implements MoviesService {
         return moviesRepository.save(movie);
     }
 
+    @Override
+    public Movies findById(Long movieId) {
+        return moviesRepository.findById(movieId).orElseThrow(
+                () -> new RuntimeException("Movie not found: " + movieId)
+        );
+
+    }
+
 
 }

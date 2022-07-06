@@ -16,4 +16,11 @@ public class SeriesServiceImpl implements SeriesService {
     public Series newSeries(Series series) {
         return seriesRepository.save(series);
     }
+
+    @Override
+    public Series findById(Long seriesId) {
+        return seriesRepository.findById(seriesId).orElseThrow(
+                () -> new RuntimeException("Series not found: " + seriesId)
+        );
+    }
 }

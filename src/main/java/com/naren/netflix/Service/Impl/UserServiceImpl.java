@@ -16,4 +16,16 @@ public class UserServiceImpl implements UserService {
     public User newUser(User user) {
         return userRepository.save(user);
     }
+
+    @Override
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new RuntimeException("User not Found")
+        );
+    }
+
+    @Override
+    public User watchedBy(User user) {
+        return userRepository.save(user);
+    }
 }

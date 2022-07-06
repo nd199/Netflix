@@ -4,4 +4,6 @@ import com.naren.netflix.Entity.Series;
 
 public interface SeriesService {
     Series newSeries(Series series);
+
+    Series findById(Long seriesId);
 }
